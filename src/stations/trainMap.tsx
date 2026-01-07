@@ -3,7 +3,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { ITrainMapProps } from "./interface";
 
-
 export default function TrainMap({
   stations,
   selectedStation,
@@ -12,19 +11,23 @@ export default function TrainMap({
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
   const markers = useRef<Map<string, L.Marker>>(new Map());
-
+  const MarkerIcon = L.icon({
+    iconUrl: "marker-icon.png",
+    iconSize: [20, 40],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+  });
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
     // show Germany by default
     map.current = L.map(mapContainer.current).setView(
-      [51.165691, 10.451526],
+      [52, 10.451526],
       6
     );
     L.tileLayer(`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`, {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map?.current)
-
+    }).addTo(map?.current);
   }, []);
 
   useEffect(() => {
@@ -34,6 +37,7 @@ export default function TrainMap({
     stations?.forEach((station) => {
       const marker = L.marker([station.lat, station.lng], {
         title: station.name,
+        icon: MarkerIcon,
       });
 
       marker.bindPopup(`<strong>${station.name}</strong><br>${station.city}`);
