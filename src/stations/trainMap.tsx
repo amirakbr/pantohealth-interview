@@ -15,6 +15,7 @@ export default function TrainMap({
 
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
+    // show Germany by default
     map.current = L.map(mapContainer.current).setView(
       [51.165691, 10.451526],
       6
@@ -52,7 +53,6 @@ export default function TrainMap({
 
     const marker = markers.current.get(selectedStation.id);
     if (marker) {
-      // Zoom to marker
       map.current.setView([selectedStation.lat, selectedStation.lng], 10);
       marker.openPopup();
     }

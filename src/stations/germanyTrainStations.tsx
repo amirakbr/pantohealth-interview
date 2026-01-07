@@ -5,6 +5,7 @@ import Card from "../_sharedComponents/card/card";
 import Error from "../_sharedComponents/error";
 import TrainMap from "./trainMap";
 import type { IStation } from "./interface";
+import { filterStationsByQuery } from "../utils/filterStationsByQuery";
 
 const GermanyTrainStations = () => {
   const { data, isFetching, isError, error, refetch } = useGetStationData();
@@ -32,11 +33,7 @@ const GermanyTrainStations = () => {
     }
 
     if (searchQuery) {
-      filtered = filtered?.filter(
-        (s) =>
-          s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          s.city.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      filtered = filterStationsByQuery(searchQuery, filtered);
     }
 
     setFilteredStations(filtered);
